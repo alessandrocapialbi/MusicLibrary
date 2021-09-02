@@ -12,26 +12,28 @@ class Playlist {
 public:
     Playlist(string t, bool loop) : title(t), loop(loop) {};
 
-    ~Playlist(){};
+    ~Playlist() {};
 
     void addTrack(AudioTrack &track) {
-        pair<string, AudioTrack> elem = {track.getTitle(), track};
-        playlist.insert(elem);
+        playlist.insert(make_pair(track.getTitle(), track));
     }
 
     void removeTrack(string title) {
-        for (auto i: playlist) {
-            if (playlist.find(title) != playlist.end())
-                playlist.erase(title);
+        map<string, AudioTrack>::iterator it;
+        it = playlist.find(title);
+        if (it!=playlist.end()){
+            playlist.erase(it);
         }
-    }
+        }
+
 
     void playTrack(string title) {
-        for (auto i: playlist) {
-            if (i.first == title)
-                i.second.play();
-
+        map<string, AudioTrack>::iterator it;
+        it = playlist.find(title);
+        if (it != playlist.end()) {
+            it->second.play();
         }
+
     }
 
     void play() const {
@@ -40,18 +42,18 @@ public:
         }
     }
 
-    void showSongs(){
-        for (auto i : playlist){
-            cout<<i.first<<endl<<endl;
+    void showSongs() {
+        for (auto i: playlist) {
+            cout << i.first << endl << endl;
         }
     }
 
-    string getTitle() const{
+    string getTitle() const {
         return title;
     }
 
 private:
-    map<string, AudioTrack> playlist;
+    map <string, AudioTrack> playlist;
     string title;
     bool loop;
 };

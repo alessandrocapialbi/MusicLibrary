@@ -7,27 +7,41 @@
 
 #include "Playlist.h"
 #include <map>
+
 using namespace std;
 
-class MusicLibrary{
+class MusicLibrary {
 public:
 
-    MusicLibrary(){};
-    void addPlaylist(Playlist& p){
-        pair<string, Playlist> elem = {p.getTitle(), p };
+    MusicLibrary() {};
+
+    void addPlaylist(Playlist &p) {
+        pair<string, Playlist> elem = {p.getTitle(), p};
         musicLibrary.insert(elem);
     }
-    bool findPlaylist(string title){
-        for (auto i : musicLibrary){
-            if (musicLibrary.find(title) != musicLibrary.end())
-                return true;
-            return false;
+
+    void editPlaylist(Playlist &p) {
+        map<string, Playlist>::iterator it;
+        it = musicLibrary.find(p.getTitle());
+        if (it != musicLibrary.end()) {
+            it->second = p;
         }
     }
-    void play(string title){
-        for (auto i : musicLibrary){
-            if (musicLibrary.find(title) != musicLibrary.end())
-                i.second.play();
+
+    bool findPlaylist(string title) {
+        map<string, Playlist>::iterator p;
+        p = musicLibrary.find(title);
+        if (p != musicLibrary.end()) {
+            return true;
+        }
+        return false;
+    }
+
+    void play(string title) {
+        map<string, Playlist>::iterator it;
+        it = musicLibrary.find(title);
+        if (it != musicLibrary.end()) {
+            it->second.play();
         }
     }
 
@@ -36,4 +50,5 @@ private:
     map<string, Playlist> musicLibrary;
 
 };
+
 #endif //MUSICLIBRARYWITHMAP_MUSICLIBRARY_H
